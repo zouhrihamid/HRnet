@@ -1,8 +1,9 @@
 import Header from './Components/Header/Header';
 import Footer from './Components/Footer/Footer';
-import Home from './Components/Pages/Home/Home';
-import Employees from './Components/Pages/Employee/Employees';
+import Home from './pages/Home/Home';
+import Employees from './pages/Employee/Employees';
 import { Routes, Route } from 'react-router-dom';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 function App() {
       return (
             <div className="app-container">

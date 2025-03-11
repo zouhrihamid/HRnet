@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
+import SelectInput from '../../Components/Select/SelectInput';
+import { stateOptions, departmentOptions } from '../../Data/Data';
+import Modal from '../../Components/Modal/Modal';
 
 function Home() {
       const navigate = useNavigate();
@@ -16,31 +19,33 @@ function Home() {
             department: '',
       });
 
-      const [confirmation, setConfirmation] = useState(false);
+      const [showModal, setShowModal] = useState(false);
 
-      const handleChange = (e) => {
-            setFormData({
-                  ...formData,
+      const handleChange = useCallback((e) => {
+            setFormData((prev) => ({
+                  ...prev,
                   [e.target.name]: e.target.value,
-            });
-      };
+            }));
+      }, []);
 
-      const handleSaveEmployee = (e) => {
-            e.preventDefault();
+      const handleSaveEmployee = useCallback(
+            (e) => {
+                  e.preventDefault();
 
-            const employees = JSON.parse(localStorage.getItem('employees')) || [];
+                  const employees = JSON.parse(localStorage.getItem('employees') || '[]');
+                  const newEmployee = { id: Date.now(), ...formData };
 
-            employees.push({ id: Date.now(), ...formData });
+                  localStorage.setItem('employees', JSON.stringify([...employees, newEmployee]));
 
-            localStorage.setItem('employees', JSON.stringify(employees));
+                  setShowModal(true);
+            },
+            [formData]
+      );
 
-            setConfirmation(true);
-
-            setTimeout(() => {
-                  setConfirmation(false);
-                  navigate('/employees');
-            }, 2000);
-      };
+      const handleCloseModal = useCallback(() => {
+            setShowModal(false);
+            navigate('/employees');
+      }, [navigate]);
 
       return (
             <main className="main-container">
@@ -78,15 +83,7 @@ function Home() {
                                           <input type="text" name="city" value={formData.city} onChange={handleChange} required />
                                     </div>
                                     <div className="input-wrapper-inligne">
-                                          <div className="input-wrapper">
-                                                <label>State :</label>
-                                                <select name="state" className="select" value={formData.state} onChange={handleChange} required>
-                                                      <option value="">Select a state</option>
-                                                      <option value="NY">New York</option>
-                                                      <option value="CA">California</option>
-                                                      <option value="TX">Texas</option>
-                                                </select>
-                                          </div>
+                                          <SelectInput label="State" name="state" value={formData.state} options={stateOptions} onChange={handleChange} />
                                           <div className="input-wrapper">
                                                 <label>Zip Code :</label>
                                                 <input type="number" name="zipCode" value={formData.zipCode} onChange={handleChange} required />
@@ -94,27 +91,14 @@ function Home() {
                                     </div>
                               </fieldset>
 
-                              <div className="input-wrapper">
-                                    <label>Department</label>
-                                    <select name="department" className="select" value={formData.department} onChange={handleChange} required>
-                                          <option value="">Select a department</option>
-                                          <option value="Sales">Sales</option>
-                                          <option value="Marketing">Marketing</option>
-                                          <option value="Engineering">Engineering</option>
-                                          <option value="Human Resources">Human Resources</option>
-                                          <option value="Legal">Legal</option>
-                                    </select>
-                              </div>
+                              <SelectInput label="Department" name="department" value={formData.department} options={departmentOptions} onChange={handleChange} />
+
                               <button type="submit" className="save">
                                     Save
                               </button>
                         </form>
 
-                        {confirmation && (
-                              <div id="confirmation" className="modal">
-                                    Employee Created!
-                              </div>
-                        )}
+                        {showModal && <Modal message="Employee Created!" onClose={handleCloseModal} />}
                   </div>
             </main>
       );
