@@ -1,28 +1,29 @@
-import { useEffect, useState, useMemo, memo } from 'react';
-import './Employees.css';
+import { useEffect, useState, useMemo, useCallback, memo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Employees.css';
 
-const SortIcon = ({ direction }) => (
-      <span className={`sort-icon ${direction === 'asc' ? 'asc' : 'desc'}`}>
-            <i className={`fa fa-sort-${direction === 'asc' ? 'up' : 'down'}`}></i>
+//  Icône de tri
+const SortIcon = ({ active, direction }) => (
+      <span className="sort-icon">
+            <span className={`arrow arrow-up ${active && direction === 'asc' ? 'active' : ''}`}>&#129169;</span>
+            <span className={`arrow arrow-down ${active && direction === 'desc' ? 'active' : ''}`}>&#129171;</span>
       </span>
 );
 
-const EmployeeRow = memo(({ employee }) => {
-      return (
-            <tr>
-                  <td>{employee.firstName}</td>
-                  <td>{employee.lastName}</td>
-                  <td>{employee.dateOfBirth}</td>
-                  <td>{employee.startDate}</td>
-                  <td>{employee.street}</td>
-                  <td>{employee.city}</td>
-                  <td>{employee.state}</td>
-                  <td>{employee.zipCode}</td>
-                  <td>{employee.department}</td>
-            </tr>
-      );
-});
+//  Composant optimisé pour une ligne employé (évite les rendus inutiles)
+const EmployeeRow = memo(({ employee }) => (
+      <tr>
+            <td>{employee.firstName}</td>
+            <td>{employee.lastName}</td>
+            <td>{employee.dateOfBirth}</td>
+            <td>{employee.startDate}</td>
+            <td>{employee.street}</td>
+            <td>{employee.city}</td>
+            <td>{employee.state}</td>
+            <td>{employee.zipCode}</td>
+            <td>{employee.department}</td>
+      </tr>
+));
 
 function Employee() {
       const [employees, setEmployees] = useState([]);
@@ -32,41 +33,54 @@ function Employee() {
       const [sortColumn, setSortColumn] = useState(null);
       const [sortDirection, setSortDirection] = useState('asc');
       const navigate = useNavigate();
+      const debounceTimeout = useRef(null);
 
+      //  Chargement des employés depuis le localStorage
       useEffect(() => {
             const storedEmployees = JSON.parse(localStorage.getItem('employees')) || [];
             setEmployees(storedEmployees);
       }, []);
 
-      const filteredAndSortedEmployees = useMemo(() => {
-            let sortedEmployees = [...employees];
+      //  Gestion de la recherche avec debounce
+      const handleSearchChange = useCallback((value) => {
+            if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
+            debounceTimeout.current = setTimeout(() => {
+                  setSearchTerm(value);
+            }, 300);
+      }, []);
 
-            if (sortColumn) {
-                  sortedEmployees.sort((a, b) => {
+      //  Fonction de tri et filtrage optimisée
+      const filteredAndSortedEmployees = useMemo(() => {
+            return employees
+                  .filter((employee) => [employee.firstName, employee.lastName, employee.city, employee.state, employee.department].some((value) => String(value).toLowerCase().includes(searchTerm.toLowerCase())))
+                  .sort((a, b) => {
+                        if (!sortColumn) return 0;
                         const valueA = a[sortColumn]?.toString().toLowerCase() || '';
                         const valueB = b[sortColumn]?.toString().toLowerCase() || '';
                         return sortDirection === 'asc' ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
                   });
-            }
-
-            return sortedEmployees.filter((employee) => Object.values(employee).some((value) => String(value).toLowerCase().includes(searchTerm.toLowerCase())));
       }, [employees, searchTerm, sortColumn, sortDirection]);
 
+      //  Pagination optimisée
       const totalEntries = filteredAndSortedEmployees.length;
-      const totalPages = Math.ceil(totalEntries / entriesToShow);
+      const totalPages = useMemo(() => Math.ceil(totalEntries / entriesToShow), [totalEntries, entriesToShow]);
       const startIndex = (currentPage - 1) * entriesToShow;
-      const displayedEmployees = filteredAndSortedEmployees.slice(startIndex, startIndex + entriesToShow);
+      const displayedEmployees = useMemo(() => filteredAndSortedEmployees.slice(startIndex, startIndex + entriesToShow), [filteredAndSortedEmployees, startIndex, entriesToShow]);
 
-      const handleSort = (column) => {
-            setSortColumn(column);
-            setSortDirection((prev) => (sortColumn === column && prev === 'asc' ? 'desc' : 'asc'));
-      };
+      //  Gestion du tri
+      const handleSort = useCallback(
+            (column) => {
+                  setSortColumn(column);
+                  setSortDirection((prevDirection) => (sortColumn === column && prevDirection === 'asc' ? 'desc' : 'asc'));
+            },
+            [sortColumn]
+      );
 
       return (
             <main className="employee-container">
                   <h1>Current Employees</h1>
-
                   <div className="container">
+                        {/*  Contrôles (sélection et recherche) */}
                         <div className="controls">
                               <div className="entries-select controls-text">
                                     <label>Show </label>
@@ -82,25 +96,28 @@ function Employee() {
                                     <label>Search: </label>
                                     <div className="search-input-container">
                                           <i className="fa fa-search"></i>
-                                          <input type="text" placeholder="Search employees" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                                          <input type="text" placeholder="Search employees" onChange={(e) => handleSearchChange(e.target.value)} />
                                     </div>
                               </div>
                         </div>
 
+                        {/*  Tableau des employés */}
                         <table className="employee-table">
                               <thead>
                                     <tr>
                                           {['firstName', 'lastName', 'dateOfBirth', 'startDate', 'street', 'city', 'state', 'zipCode', 'department'].map((column) => (
                                                 <th key={column} onClick={() => handleSort(column)} className={sortColumn === column ? sortDirection : ''}>
-                                                      {column.replace(/([A-Z])/g, ' $1').trim()}
-                                                      {sortColumn === column && <SortIcon direction={sortDirection} />}
+                                                      <div className="sort-header">
+                                                            {column.replace(/([A-Z])/g, ' $1').trim()}
+                                                            <SortIcon active={sortColumn === column} direction={sortDirection} />
+                                                      </div>
                                                 </th>
                                           ))}
                                     </tr>
                               </thead>
                               <tbody>
                                     {displayedEmployees.length > 0 ? (
-                                          displayedEmployees.map((employee) => <EmployeeRow key={employee.id} employee={employee} />)
+                                          displayedEmployees.map((employee) => <EmployeeRow key={`${employee.id || employee.firstName}-${employee.lastName}`} employee={employee} />)
                                     ) : (
                                           <tr>
                                                 <td colSpan="9">Aucun employé ajouté.</td>
@@ -109,6 +126,7 @@ function Employee() {
                               </tbody>
                         </table>
 
+                        {/* Pagination */}
                         <div className="pagination controls-text">
                               <span>
                                     Showing {startIndex + 1} to {Math.min(startIndex + entriesToShow, totalEntries)} of {totalEntries} entries
@@ -124,6 +142,7 @@ function Employee() {
                               </div>
                         </div>
 
+                        {/* Bouton retour à l'accueil */}
                         <button className="button-home" onClick={() => navigate('/')}>
                               Home
                         </button>

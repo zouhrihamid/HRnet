@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-const SelectInput = memo(({ label, name, value, options, onChange }) => {
+export const SelectInput = memo(({ label, name, value, options = [], onChange }) => {
       return (
             <div className="input-wrapper">
                   <label>{label}:</label>
@@ -16,4 +16,9 @@ const SelectInput = memo(({ label, name, value, options, onChange }) => {
       );
 });
 
-export default SelectInput;
+export const InputField = memo(({ label, name, type = 'text', value, onChange }) => (
+      <div className="input-wrapper">
+            <label>{label} :</label>
+            <input type={type} name={name} value={value} onChange={onChange} required />
+      </div>
+));
