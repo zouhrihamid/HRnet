@@ -28,16 +28,9 @@ main {
       flex: 1;
 }
 
-.input-wrapper-inligne .input-wrapper,
-.input-wrapper-inligne .select {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-}
-
 .input-wrapper-inligne select,
 .input-wrapper-inligne input {
-      width: 92.5%;
+      width: 93.5%;
       text-align: center;
       box-sizing: border-box;
       padding-top: 1.3vh;

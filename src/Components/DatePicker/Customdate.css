@@ -1,0 +1,51 @@
+/* Style du conteneur du DatePicker */
+.custom-select-container {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 15px;
+}
+
+.custom-select-container label {
+      font-size: 14px;
+      font-weight: bold;
+      color: #333;
+      text-align: left;
+}
+
+.custom-select-container .react-datepicker__input-container input,
+.custom-select-container .react-datepicker__input-container input:focus {
+      width: 95%;
+      padding: 0.55rem;
+      font-size: 14px;
+      text-align: left;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
+      color: #333;
+      cursor: pointer;
+      transition: all 0.3s ease;
+}
+
+.custom-select-container .react-datepicker__input-container input::placeholder {
+      color: #aaa;
+      font-style: italic;
+}
+
+.custom-select-container .react-datepicker__input-container input:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+      outline: none;
+}
+
+.custom-select-container .react-datepicker__input-container input:disabled {
+      background-color: #f0f0f0;
+      cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+      .custom-select-container .react-datepicker__input-container input {
+            font-size: 12px;
+            padding: 8px;
+      }
+}

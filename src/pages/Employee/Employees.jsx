@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback, memo, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Employees.css';
 
@@ -10,8 +10,8 @@ const SortIcon = ({ active, direction }) => (
       </span>
 );
 
-//  Composant optimisé pour une ligne employé (évite les rendus inutiles)
-const EmployeeRow = memo(({ employee }) => (
+//  Composant pour une ligne employé
+const EmployeeRow = ({ employee }) => (
       <tr>
             <td>{employee.firstName}</td>
             <td>{employee.lastName}</td>
@@ -23,7 +23,7 @@ const EmployeeRow = memo(({ employee }) => (
             <td>{employee.zipCode}</td>
             <td>{employee.department}</td>
       </tr>
-));
+);
 
 function Employee() {
       const [employees, setEmployees] = useState([]);
@@ -49,23 +49,21 @@ function Employee() {
             }, 300);
       }, []);
 
-      //  Fonction de tri et filtrage optimisée
-      const filteredAndSortedEmployees = useMemo(() => {
-            return employees
-                  .filter((employee) => [employee.firstName, employee.lastName, employee.city, employee.state, employee.department].some((value) => String(value).toLowerCase().includes(searchTerm.toLowerCase())))
-                  .sort((a, b) => {
-                        if (!sortColumn) return 0;
-                        const valueA = a[sortColumn]?.toString().toLowerCase() || '';
-                        const valueB = b[sortColumn]?.toString().toLowerCase() || '';
-                        return sortDirection === 'asc' ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
-                  });
-      }, [employees, searchTerm, sortColumn, sortDirection]);
+      //  Fonction de tri et filtrage
+      const filteredAndSortedEmployees = employees
+            .filter((employee) => [employee.firstName, employee.lastName, employee.city, employee.state, employee.department].some((value) => String(value).toLowerCase().includes(searchTerm.toLowerCase())))
+            .sort((a, b) => {
+                  if (!sortColumn) return 0;
+                  const valueA = a[sortColumn]?.toString().toLowerCase() || '';
+                  const valueB = b[sortColumn]?.toString().toLowerCase() || '';
+                  return sortDirection === 'asc' ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
+            });
 
-      //  Pagination optimisée
+      //  Pagination
       const totalEntries = filteredAndSortedEmployees.length;
-      const totalPages = useMemo(() => Math.ceil(totalEntries / entriesToShow), [totalEntries, entriesToShow]);
+      const totalPages = Math.ceil(totalEntries / entriesToShow);
       const startIndex = (currentPage - 1) * entriesToShow;
-      const displayedEmployees = useMemo(() => filteredAndSortedEmployees.slice(startIndex, startIndex + entriesToShow), [filteredAndSortedEmployees, startIndex, entriesToShow]);
+      const displayedEmployees = filteredAndSortedEmployees.slice(startIndex, startIndex + entriesToShow);
 
       //  Gestion du tri
       const handleSort = useCallback(
