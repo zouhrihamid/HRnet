@@ -1,25 +1,23 @@
-/* Style du conteneur du DatePicker */
-.custom-select-container {
+.custom-datepicker {
       display: flex;
       flex-direction: column;
       gap: 5px;
       margin-bottom: 15px;
 }
 
-.custom-select-container label {
+.custom-datepicker label {
       font-size: 14px;
       font-weight: bold;
       color: #333;
       text-align: left;
 }
 
-.custom-select-container .react-datepicker__input-container input,
-.custom-select-container .react-datepicker__input-container input:focus {
-      width: 95%;
-      padding: 0.55rem;
-      font-size: 14px;
+.custom-datepicker .MuiOutlinedInput-root {
+      width: 100%;
+
+      padding: 0.5rem 1rem;
+      font-size: 10px;
       text-align: left;
-      border: 1px solid #ccc;
       border-radius: 5px;
       background-color: #fff;
       color: #333;
@@ -27,25 +25,54 @@
       transition: all 0.3s ease;
 }
 
-.custom-select-container .react-datepicker__input-container input::placeholder {
+.custom-datepicker .MuiOutlinedInput-root.Mui-focused {
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+      outline: none;
+      background-color: rgb(232, 240, 254);
+}
+
+.custom-datepicker .MuiInputBase-input::placeholder {
       color: #aaa;
       font-style: italic;
 }
 
-.custom-select-container .react-datepicker__input-container input:focus {
-      border-color: #007bff;
-      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-      outline: none;
-}
-
-.custom-select-container .react-datepicker__input-container input:disabled {
+.custom-datepicker .MuiOutlinedInput-root.Mui-disabled {
       background-color: #f0f0f0;
       cursor: not-allowed;
 }
 
+.custom-datepicker .MuiInputBase-input:not(:placeholder-shown) {
+      background-color: rgb(232, 240, 254);
+      color: #333;
+}
+
+.custom-datepicker .MuiPickersDay-root {
+      font-size: 20px;
+}
+
+.custom-datepicker .MuiPickersDay-today {
+      background-color: #007bff !important;
+      color: white !important;
+}
+
+.custom-datepicker .MuiPickersDay-daySelected {
+      background-color: #1565c0 !important;
+      color: white !important;
+}
+
 @media (max-width: 768px) {
-      .custom-select-container .react-datepicker__input-container input {
+      .custom-datepicker .MuiOutlinedInput-root {
             font-size: 12px;
-            padding: 8px;
+            padding: 4px;
       }
+}
+.custom-datepicker .MuiInputBase-input {
+      font-size: 10px;
+}
+
+.custom-datepicker .MuiInputBase-input:not(:placeholder-shown) {
+      font-size: 14px;
+
+      color: #333;
 }

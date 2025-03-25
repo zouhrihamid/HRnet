@@ -1,4 +1,4 @@
-/* .custom-select-container {
+.custom-select-container {
       display: flex;
       flex-direction: column;
       gap: 5px;
@@ -12,7 +12,6 @@
       text-align: left;
 }
 
-.custom-select-container select,
 .custom-select-container input {
       width: 95%;
       padding: 0.55rem;
@@ -26,7 +25,6 @@
       transition: all 0.3s ease;
 }
 
-.custom-select-container select:focus,
 .custom-select-container input:focus {
       border-color: #007bff;
       box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
@@ -39,7 +37,6 @@
       background: white;
 }
 
-.custom-select-container select:disabled,
 .custom-select-container input:disabled {
       background-color: #f0f0f0;
       cursor: not-allowed;
@@ -50,4 +47,4 @@
             font-size: 12px;
             padding: 8px;
       }
-} */
+}

@@ -1,22 +1,16 @@
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import './CustomDate.css';
 
-const CustomDatePicker = ({ label, value = null, onChange }) => {
-      const formattedValue = value ? dayjs(value).format('YYYY-MM-DD') : '';
-
+const CustomDatePicker = ({ label, value, onChange }) => {
       return (
-            <div className="custom-select-container">
-                  <label>{label}: </label>
-                  <DatePicker
-                        selected={value ? dayjs(value).toDate() : null}
-                        onChange={(date) => onChange(date)}
-                        dateFormat="yyyy-MM-dd"
-                        className="custom-datepicker"
-                        placeholderText={formattedValue || 'yyyy-MM-DD'}
-                  />
-            </div>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <div className="custom-datepicker">
+                        <DatePicker label={label} value={value ? dayjs(value) : null} onChange={onChange} format="DD/MM/YYYY" />
+                  </div>
+            </LocalizationProvider>
       );
 };
 

@@ -1,15 +1,15 @@
+import './Home.css';
+// import { SelectInput } from '../../Components/Select/InputSelect';
+// import '../../Components/Select/InputSelect.css';
+
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import dayjs from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import './Home.css';
-import { SelectInput } from '../../Components/Select/InputSelect';
-import { stateOptions, departmentOptions } from '../../Data/Data';
+import { states, departmentOptions } from '../../Data/Data';
 import Modal from '../../Components/Modal/Modal';
-import '../../Components/Select/InputSelect.css';
+import SelectInput from 'my-input-select-library';
+import 'my-input-select-library/dist/components/SelectInput.css';
 import CustomDatePicker from '../../Components/DatePicker/CustomDate';
-
+import InputField from '../../Components/InputField/InputFiled';
 // Initialisation de l'état du formulaire
 const initialFormState = {
       firstName: '',
@@ -23,13 +23,6 @@ const initialFormState = {
       department: '',
 };
 
-const InputField = ({ label, name, type = 'text', value, onChange }) => (
-      <div className="custom-select-container">
-            <label>{label} :</label>
-            <input type={type} name={name} value={value} onChange={onChange} required />
-      </div>
-);
-
 function Home() {
       const navigate = useNavigate();
       const [formData, setFormData] = useState(initialFormState);
@@ -42,7 +35,10 @@ function Home() {
 
       // Gestion du changement des dates
       const handleDateChange = useCallback((name, date) => {
-            setFormData((prev) => ({ ...prev, [name]: date ? dayjs(date).format('YYYY-MM-DD') : null }));
+            setFormData((prev) => ({
+                  ...prev,
+                  [name]: date, // Formatage de la date en "YYYY-MM-DD"
+            }));
       }, []);
 
       const handleSaveEmployee = useCallback(
@@ -74,15 +70,11 @@ function Home() {
                         <form className="form-content" onSubmit={handleSaveEmployee}>
                               <InputField label="First Name" name="firstName" value={formData.firstName} onChange={handleChange} />
                               <InputField label="Last Name" name="lastName" value={formData.lastName} onChange={handleChange} />
-                              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <div className="input-wrapper">
-                                          <CustomDatePicker label="Date of Birth" value={formData?.dateOfBirth || null} onChange={(date) => handleDateChange('dateOfBirth', date)} />
-                                    </div>
+                              <div>
+                                    <CustomDatePicker label="Date of Birth" value={formData.dateOfBirth} onChange={(date) => handleDateChange('dateOfBirth', date)} />
 
-                                    <div className="input-wrapper">
-                                          <CustomDatePicker label="Start Date" value={formData?.startDate || null} onChange={(date) => handleDateChange('startDate', date)} />
-                                    </div>
-                              </LocalizationProvider>
+                                    <CustomDatePicker label="Start Date" value={formData.startDate} onChange={(date) => handleDateChange('startDate', date)} />
+                              </div>
 
                               <fieldset className="address">
                                     <legend>Address :</legend>
@@ -93,7 +85,7 @@ function Home() {
                                                 label="State"
                                                 name="state"
                                                 value={formData.state}
-                                                options={stateOptions}
+                                                options={states.map(({ name, abbreviation }) => ({ value: abbreviation, label: name }))}
                                                 onChange={handleChange}
                                                 isRequired={true}
                                                 className="custom-select-container"
