@@ -2,7 +2,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
-import './CustomDate.css';
+import '../../styles/CustomDate.css';
 
 const CustomDatePicker = ({ label, value, onChange, onBlur }) => {
       const handleBlur = (e) => {

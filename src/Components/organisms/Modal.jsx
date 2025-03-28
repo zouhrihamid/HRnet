@@ -1,4 +1,4 @@
-import './Modal.css';
+import '../../styles/Modal.css';
 import { memo, useEffect } from 'react';
 
 const Modal = memo(({ message, onClose }) => {
