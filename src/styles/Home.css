@@ -79,11 +79,18 @@ main {
       background-color: #fdecea;
 }
 
+/* Message d'erreur */
+.error {
+      color: #e74c3c;
+      font-size: 10px;
+      font-weight: 500;
+      margin-top: 10px;
+      margin-left: 5px;
+      text-align: left;
+}
 .container-input-error {
       display: flex;
       flex-direction: column;
-
-      margin-bottom: 1rem;
 }
 .container-input-select-error {
       display: flex;
@@ -96,23 +103,5 @@ main {
       font-weight: 500;
       margin-top: -1.5rem;
       margin-left: 5px;
-      text-align: left;
-}
-.container-input-select-error {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-}
-
-.custom-select-container {
-      margin-bottom: 0;
-}
-
-.error {
-      color: #e74c3c;
-      font-size: 10px;
-      font-weight: 500;
-      margin-top: -0.55rem;
-      margin-bottom: 0;
       text-align: left;
 }

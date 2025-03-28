@@ -4,11 +4,16 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import './CustomDate.css';
 
-const CustomDatePicker = ({ label, value, onChange }) => {
+const CustomDatePicker = ({ label, value, onChange, onBlur }) => {
+      const handleBlur = (e) => {
+            onBlur(e);
+      };
+
       return (
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <div className="custom-datepicker">
-                        <DatePicker label={label} value={value ? dayjs(value) : null} onChange={onChange} format="DD/MM/YYYY" />
+                        <label>{label} :</label>
+                        <DatePicker value={value ? dayjs(value) : null} onChange={onChange} format="DD/MM/YYYY" placeholder="DD/MM/YYYY" onBlur={handleBlur} />
                   </div>
             </LocalizationProvider>
       );
