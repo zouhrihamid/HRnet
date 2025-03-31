@@ -14,65 +14,50 @@
 
 .custom-datepicker .MuiOutlinedInput-root {
       width: 100%;
-
-      padding: 0.5rem 1rem;
+      border-color: #ccc !important;
       font-size: 12px;
       text-align: left;
       border-radius: 5px;
+      height: 38px;
       background-color: #fff;
       color: #333;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      box-sizing: border-box;
 }
 
-.custom-datepicker .MuiOutlinedInput-root.Mui-focused {
-      border-color: #007bff;
-      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-      outline: none;
-      background-color: rgb(232, 240, 254);
+/* Icône du DatePicker */
+.custom-datepicker .MuiIconButton-root {
+      background-color: transparent !important;
+      padding: 8px;
+      border-radius: 4px;
 }
 
+/* Appliquer la couleur de fond uniquement quand une date est sélectionnée */
+.custom-datepicker .MuiOutlinedInput-root.MuiInputBase-adornedEnd:has(.MuiInputBase-input:not(:placeholder-shown)) {
+      background-color: rgb(232, 240, 254) !important;
+}
+
+/* Placeholder styling */
 .custom-datepicker .MuiInputBase-input::placeholder {
       color: #aaa;
       font-size: 14px;
+      text-align: left;
 }
 
-.custom-datepicker .MuiOutlinedInput-root.Mui-disabled {
-      background-color: #f0f0f0;
-      cursor: not-allowed;
-}
-
-.custom-datepicker .MuiInputBase-input:not(:placeholder-shown) {
-      background-color: rgb(232, 240, 254);
-      color: #333;
-}
-
+/* Style des jours dans le calendrier */
 .custom-datepicker .MuiPickersDay-root {
       font-size: 20px;
 }
 
+/* Style du jour actuel dans le calendrier */
 .custom-datepicker .MuiPickersDay-today {
       background-color: #007bff !important;
       color: white !important;
 }
 
-.custom-datepicker .MuiPickersDay-root.Mui-selected {
-      background-color: #1565c0 !important;
-      color: white !important;
-}
-
+/* Ajustement pour mobile */
 @media (max-width: 768px) {
       .custom-datepicker .MuiOutlinedInput-root {
             font-size: 12px;
             padding: 4px;
       }
-}
-.custom-datepicker .MuiInputBase-input {
-      font-size: 10px;
-}
-
-.custom-datepicker .MuiInputBase-input:not(:placeholder-shown) {
-      font-size: 14px;
-
-      color: #333;
 }

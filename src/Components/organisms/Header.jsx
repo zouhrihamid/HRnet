@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom';
 import Logo from '../../assets/Hrnet-logo.jpg';
-import './Header.css';
-import { memo } from 'react';
+import '../../styles/Header.css';
 
-const Header = memo(() => {
+const Header = () => {
       return (
             <header className="main-nav">
                   <Link to="/">
@@ -25,6 +24,6 @@ const Header = memo(() => {
                   </nav>
             </header>
       );
-});
+};
 
 export default Header;

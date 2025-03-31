@@ -1,5 +1,5 @@
 import InputField from '../../Components/atoms/InputFiled';
-import '../../styles/Home.css';
+import '../../styles/validation.css';
 
 const InputGroup = ({ label, name, type, value, onChange, onBlur, placeholder, error }) => (
       <div className="container-input-error">

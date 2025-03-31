@@ -1,11 +1,20 @@
-.custom-select-container {
+.InputField {
       display: flex;
       flex-direction: column;
+      align-items: flex-start;
       gap: 5px;
-      margin-bottom: 15px;
 }
-
-.custom-select-container input {
+.InputField label {
+      font-size: 14px;
+      font-weight: bold;
+      color: #333;
+      text-align: left;
+}
+input::placeholder {
+      color: #aaa; /* Assure-toi que la couleur est différente du fond */
+      font-style: italic;
+}
+.InputField input {
       width: 95%;
       padding: 0.55rem;
       font-size: 14px;
@@ -17,32 +26,25 @@
       cursor: pointer;
       transition: all 0.3s ease;
 }
-.custom-select-container select:focus,
-.custom-select-container select.selected {
-      background-color: rgb(232, 240, 254);
-      border-color: #007bff;
-      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-      outline: none;
-}
-.custom-select-container input:focus {
+
+.InputField input:focus {
       border-color: #007bff;
       box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
       outline: none;
 }
 
-.custom-select-container select option {
-      font-size: 14px;
-      color: #333;
-      background: white;
-}
-
-.custom-select-container input:disabled {
+.InputField input:disabled {
       background-color: #f0f0f0;
       cursor: not-allowed;
 }
-
+.InputField input:hover {
+      border: 1px solid black;
+}
+.InputField input:hover {
+      border: 1px solid black;
+}
 @media (max-width: 768px) {
-      .custom-select-container select {
+      .InputField select {
             font-size: 12px;
             padding: 8px;
       }

@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Employees.css';
 
-//  Icône de tri
+// Icône de tri
 const SortIcon = ({ active, direction }) => (
       <span className="sort-icon">
             <span className={`arrow arrow-up ${active && direction === 'asc' ? 'active' : ''}`}>&#129169;</span>
@@ -10,18 +10,33 @@ const SortIcon = ({ active, direction }) => (
       </span>
 );
 
-//  Composant pour une ligne employé
-const EmployeeRow = ({ employee }) => (
+// Fonction pour formater la date en dd/mm/yyyy
+const formatDate = (date) => {
+      if (!date) return '';
+      const d = new Date(date);
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+};
+
+// Composant pour une ligne employé
+const EmployeeRow = ({ employee, onDelete }) => (
       <tr>
             <td>{employee.firstName}</td>
             <td>{employee.lastName}</td>
-            <td>{employee.dateOfBirth}</td>
-            <td>{employee.startDate}</td>
+            <td>{formatDate(employee.dateOfBirth)}</td>
+            <td>{formatDate(employee.startDate)}</td>
             <td>{employee.street}</td>
             <td>{employee.city}</td>
             <td>{employee.state}</td>
             <td>{employee.zipCode}</td>
             <td>{employee.department}</td>
+            <td>
+                  <button onClick={() => onDelete(employee.id)} className="delete-button">
+                        Delete
+                  </button>
+            </td>
       </tr>
 );
 
@@ -35,13 +50,13 @@ function Employee() {
       const navigate = useNavigate();
       const debounceTimeout = useRef(null);
 
-      //  Chargement des employés depuis le localStorage
+      // Chargement des employés depuis le localStorage
       useEffect(() => {
             const storedEmployees = JSON.parse(localStorage.getItem('employees')) || [];
             setEmployees(storedEmployees);
       }, []);
 
-      //  Gestion de la recherche avec debounce
+      // Gestion de la recherche avec debounce
       const handleSearchChange = useCallback((value) => {
             if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
             debounceTimeout.current = setTimeout(() => {
@@ -49,9 +64,11 @@ function Employee() {
             }, 300);
       }, []);
 
-      //  Fonction de tri et filtrage
+      // Fonction de tri et filtrage
       const filteredAndSortedEmployees = employees
-            .filter((employee) => [employee.firstName, employee.lastName, employee.city, employee.state, employee.department].some((value) => String(value).toLowerCase().includes(searchTerm.toLowerCase())))
+            .filter((employee) =>
+                  [employee.firstName, employee.lastName, employee.city, employee.state, employee.department].some((value) => String(value).toLowerCase().includes(searchTerm.toLowerCase()))
+            )
             .sort((a, b) => {
                   if (!sortColumn) return 0;
                   const valueA = a[sortColumn]?.toString().toLowerCase() || '';
@@ -59,13 +76,13 @@ function Employee() {
                   return sortDirection === 'asc' ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
             });
 
-      //  Pagination
+      // Pagination
       const totalEntries = filteredAndSortedEmployees.length;
       const totalPages = Math.ceil(totalEntries / entriesToShow);
       const startIndex = (currentPage - 1) * entriesToShow;
       const displayedEmployees = filteredAndSortedEmployees.slice(startIndex, startIndex + entriesToShow);
 
-      //  Gestion du tri
+      // Gestion du tri
       const handleSort = useCallback(
             (column) => {
                   setSortColumn(column);
@@ -74,11 +91,18 @@ function Employee() {
             [sortColumn]
       );
 
+      // Fonction de suppression d'un employé
+      const handleDelete = (employeeId) => {
+            const updatedEmployees = employees.filter((employee) => employee.id !== employeeId);
+            setEmployees(updatedEmployees);
+            localStorage.setItem('employees', JSON.stringify(updatedEmployees));
+      };
+
       return (
             <main className="employee-container">
                   <h1>Current Employees</h1>
                   <div className="container">
-                        {/*  Contrôles (sélection et recherche) */}
+                        {/* Contrôles (sélection et recherche) */}
                         <div className="controls">
                               <div className="entries-select controls-text">
                                     <label>Show </label>
@@ -99,7 +123,7 @@ function Employee() {
                               </div>
                         </div>
 
-                        {/*  Tableau des employés */}
+                        {/* Tableau des employés */}
                         <table className="employee-table">
                               <thead>
                                     <tr>
@@ -115,7 +139,9 @@ function Employee() {
                               </thead>
                               <tbody>
                                     {displayedEmployees.length > 0 ? (
-                                          displayedEmployees.map((employee) => <EmployeeRow key={`${employee.id || employee.firstName}-${employee.lastName}`} employee={employee} />)
+                                          displayedEmployees.map((employee) => (
+                                                <EmployeeRow key={`${employee.id || employee.firstName}-${employee.lastName}`} employee={employee} onDelete={handleDelete} />
+                                          ))
                                     ) : (
                                           <tr>
                                                 <td colSpan="9">Aucun employé ajouté.</td>
@@ -131,7 +157,7 @@ function Employee() {
                               </span>
                               <div className="next-pre">
                                     <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
-                                          Previous
+                                          Prev
                                     </button>
                                     <span>{currentPage}</span>
                                     <button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
