@@ -1,8 +1,8 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import EmployeeTemplate from '../../Components/templates/EmployeeTemplate';
-import { states, departmentOptions } from '../../Data/Data';
-import validateForm from '../../Utils/formValidation';
+import EmployeeTemplate from '../Components/templates/EmployeeTemplate';
+import { states, departmentOptions } from '../Data/Data';
+import validateForm from '../Utils/formValidation';
 // État initial du formulaire
 const initialFormState = {
       firstName: '',

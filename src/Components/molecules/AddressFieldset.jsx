@@ -1,6 +1,6 @@
 import InputGroup from './InputGroup';
 import CustomSelectInput from '../atoms/SelectInput';
-
+import '../../styles/Home.css';
 const AddressFieldset = ({ formData, handleChange, handleBlur, states, errors }) => (
       <fieldset className="address">
             <legend>Address:</legend>

@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Employees.css';
+import '../styles/Employees.css';
 
 // Icône de tri
 const SortIcon = ({ active, direction }) => (
