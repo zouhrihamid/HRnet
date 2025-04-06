@@ -1,7 +1,7 @@
 import '../../styles/Home.css';
 
-const Button = ({ text, onClick, type = 'button' }) => (
-      <button className="save" type={type} onClick={onClick}>
+const Button = ({ text, onClick, type = 'button', className }) => (
+      <button className={className} type={type} onClick={onClick}>
             {text}
       </button>
 );

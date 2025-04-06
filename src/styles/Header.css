@@ -3,10 +3,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 15px;
+      padding: 0px 1px;
       background-color: white;
-      max-width: 1200px;
-      margin: 0 auto;
+
+      margin-left: 0px;
+      margin-right: 0px;
 }
 
 /* Logo - Responsive */
@@ -20,8 +21,9 @@
 .main-nav-items ul {
       display: flex;
       flex-direction: row;
+      margin-right: 10px;
       list-style: none;
-      gap: 1rem;
+      gap: 2rem;
 }
 
 .main-nav-item {

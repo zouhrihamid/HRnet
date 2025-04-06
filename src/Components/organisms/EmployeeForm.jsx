@@ -1,7 +1,7 @@
 import InputGroup from '../molecules/InputGroup';
 import AddressFieldset from '../molecules/AddressFieldset';
 import CustomDatePicker from '../atoms/CustomDatePicker';
-import CustomSelectInput from '../atoms/SelectInput';
+import CustomSelectInput from '../atoms/CustomSelectInput';
 import Button from '../atoms/Button';
 
 const EmployeeForm = ({ formData, handleChange, handleBlur, handleDateChange, handleSaveEmployee, states, departmentOptions, errors }) => (
@@ -13,7 +13,7 @@ const EmployeeForm = ({ formData, handleChange, handleBlur, handleDateChange, ha
             <AddressFieldset formData={formData} handleChange={handleChange} handleBlur={handleBlur} states={states} errors={errors} />
             <CustomSelectInput label="Department" name="department" value={formData.department} options={departmentOptions} onChange={handleChange} onBlur={handleBlur} />
             {errors.department && <div className="error-select">{errors.department}</div>}
-            <Button text="Save" type="submit" />
+            <Button text="Save" type="submit" className="save" />
       </form>
 );
 export default EmployeeForm;

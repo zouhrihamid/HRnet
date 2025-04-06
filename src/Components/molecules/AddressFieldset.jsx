@@ -1,5 +1,5 @@
 import InputGroup from './InputGroup';
-import CustomSelectInput from '../atoms/SelectInput';
+import CustomSelectInput from '../atoms/CustomSelectInput';
 import '../../styles/Home.css';
 const AddressFieldset = ({ formData, handleChange, handleBlur, states, errors }) => (
       <fieldset className="address">

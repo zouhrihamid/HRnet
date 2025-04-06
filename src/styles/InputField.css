@@ -43,6 +43,16 @@ input::placeholder {
 .InputField input:hover {
       border: 1px solid black;
 }
+
+.InputField.selected input {
+      border-color: #007bff !important;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5) !important;
+}
+.InputField input:not(:placeholder-shown) {
+      background-color: rgba(0, 123, 255, 0.1) !important;
+      border-color: #007bff !important;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5) !important;
+}
 @media (max-width: 768px) {
       .InputField select {
             font-size: 12px;

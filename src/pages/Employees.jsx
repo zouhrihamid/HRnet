@@ -1,43 +1,14 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Employees.css';
-
+import EmployeeRow from '../Components/molecules/EmployeeRow';
+import Button from '../Components/atoms/Button';
 // Icône de tri
 const SortIcon = ({ active, direction }) => (
       <span className="sort-icon">
             <span className={`arrow arrow-up ${active && direction === 'asc' ? 'active' : ''}`}>&#129169;</span>
             <span className={`arrow arrow-down ${active && direction === 'desc' ? 'active' : ''}`}>&#129171;</span>
       </span>
-);
-
-// Fonction pour formater la date en dd/mm/yyyy
-const formatDate = (date) => {
-      if (!date) return '';
-      const d = new Date(date);
-      const day = String(d.getDate()).padStart(2, '0');
-      const month = String(d.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0
-      const year = d.getFullYear();
-      return `${day}/${month}/${year}`;
-};
-
-// Composant pour une ligne employé
-const EmployeeRow = ({ employee, onDelete }) => (
-      <tr>
-            <td>{employee.firstName}</td>
-            <td>{employee.lastName}</td>
-            <td>{formatDate(employee.dateOfBirth)}</td>
-            <td>{formatDate(employee.startDate)}</td>
-            <td>{employee.street}</td>
-            <td>{employee.city}</td>
-            <td>{employee.state}</td>
-            <td>{employee.zipCode}</td>
-            <td>{employee.department}</td>
-            <td>
-                  <button onClick={() => onDelete(employee.id)} className="delete-button">
-                        Delete
-                  </button>
-            </td>
-      </tr>
 );
 
 function Employee() {
@@ -156,20 +127,14 @@ function Employee() {
                                     Showing {startIndex + 1} to {Math.min(startIndex + entriesToShow, totalEntries)} of {totalEntries} entries
                               </span>
                               <div className="next-pre">
-                                    <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
-                                          Prev
-                                    </button>
+                                    <Button text="Prev" onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1} />
                                     <span>{currentPage}</span>
-                                    <button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
-                                          Next
-                                    </button>
+                                    <Button text="Next" onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} />
                               </div>
                         </div>
 
                         {/* Bouton retour à l'accueil */}
-                        <button className="button-home" onClick={() => navigate('/')}>
-                              Home
-                        </button>
+                        <Button text="Home" onClick={() => navigate('/')} className="button-home" />
                   </div>
             </main>
       );

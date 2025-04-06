@@ -1,7 +1,7 @@
 import '../../styles/Modal.css';
-import { memo, useEffect } from 'react';
+import { useEffect } from 'react';
 
-const Modal = memo(({ message, onClose }) => {
+const Modal = ({ message, onClose }) => {
       useEffect(() => {
             const handleKeyDown = (e) => {
                   if (e.key === 'Escape') {
@@ -32,6 +32,6 @@ const Modal = memo(({ message, onClose }) => {
                   </div>
             </div>
       );
-});
+};
 
 export default Modal;
