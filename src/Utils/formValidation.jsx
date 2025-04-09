@@ -19,8 +19,8 @@ const validateForm = (formData) => {
       } else {
             const dateOfBirth = new Date(formData.dateOfBirth);
             const currentDate = new Date();
-            if (dateOfBirth.getFullYear() < 1875 || dateOfBirth.getFullYear() > currentDate.getFullYear() - 18) {
-                  errors.dateOfBirth = `Date of Birth must be between 1875 and ${currentDate.getFullYear() - 18}`;
+            if (dateOfBirth.getFullYear() < currentDate.getFullYear() - 150 || dateOfBirth.getFullYear() > currentDate.getFullYear() - 18) {
+                  errors.dateOfBirth = `Date of Birth must be between ${currentDate.getFullYear() - 150} and ${currentDate.getFullYear() - 18}`;
             }
       }
       if (!formData.startDate) {
