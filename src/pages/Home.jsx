@@ -16,7 +16,7 @@ const initialFormState = {
       department: '',
 };
 
-function Home() {
+function Home({ employees, setEmployees }) {
       const navigate = useNavigate();
       const [formData, setFormData] = useState(initialFormState);
       const [errors, setErrors] = useState({});
@@ -60,14 +60,11 @@ function Home() {
                         return;
                   }
 
-                  const employees = JSON.parse(localStorage.getItem('employees') || '[]');
                   const newEmployee = { id: Date.now(), ...formData };
-
-                  localStorage.setItem('employees', JSON.stringify([...employees, newEmployee]));
-
+                  setEmployees([...employees, newEmployee]);
                   setShowModal(true);
             },
-            [formData]
+            [formData, setEmployees, employees]
       );
 
       // Gestion de la fermeture de la modal

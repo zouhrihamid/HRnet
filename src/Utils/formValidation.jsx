@@ -16,10 +16,23 @@ const validateForm = (formData) => {
       }
       if (!formData.dateOfBirth) {
             errors.dateOfBirth = 'Date of Birth is required';
+      } else {
+            const dateOfBirth = new Date(formData.dateOfBirth);
+            const currentDate = new Date();
+            if (dateOfBirth.getFullYear() < 1875 || dateOfBirth.getFullYear() > currentDate.getFullYear() - 18) {
+                  errors.dateOfBirth = `Date of Birth must be between 1875 and ${currentDate.getFullYear() - 18}`;
+            }
       }
       if (!formData.startDate) {
             errors.startDate = 'Start Date is required';
+      } else {
+            const startDate = new Date(formData.startDate);
+            const currentDate = new Date();
+            if (startDate > currentDate) {
+                  errors.startDate = 'Start Date cannot be in the future';
+            }
       }
+
       if (!formData.zipCode || formData.zipCode.toString().length < 5) {
             errors.zipCode = 'Zip code must be at least 5 digits long';
       }

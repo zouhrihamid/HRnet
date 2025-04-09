@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Employees.css';
 import EmployeeRow from '../Components/molecules/EmployeeRow';
@@ -11,8 +11,7 @@ const SortIcon = ({ active, direction }) => (
       </span>
 );
 
-function Employee() {
-      const [employees, setEmployees] = useState([]);
+function Employee({ employees, setEmployees }) {
       const [searchTerm, setSearchTerm] = useState('');
       const [entriesToShow, setEntriesToShow] = useState(5);
       const [currentPage, setCurrentPage] = useState(1);
@@ -20,12 +19,6 @@ function Employee() {
       const [sortDirection, setSortDirection] = useState('asc');
       const navigate = useNavigate();
       const debounceTimeout = useRef(null);
-
-      // Chargement des employés depuis le localStorage
-      useEffect(() => {
-            const storedEmployees = JSON.parse(localStorage.getItem('employees')) || [];
-            setEmployees(storedEmployees);
-      }, []);
 
       // Gestion de la recherche avec debounce
       const handleSearchChange = useCallback((value) => {
@@ -66,7 +59,6 @@ function Employee() {
       const handleDelete = (employeeId) => {
             const updatedEmployees = employees.filter((employee) => employee.id !== employeeId);
             setEmployees(updatedEmployees);
-            localStorage.setItem('employees', JSON.stringify(updatedEmployees));
       };
 
       return (
